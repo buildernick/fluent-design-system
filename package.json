@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@builder.io/react": "^8.1.2",
+    "@builder.io/sdk": "^6.0.9",
     "@fluentui/react-components": "^9.64.0",
+    "@fluentui/react-icons": "^2.0.300",
+    "@fluentui/react-nav-preview": "^0.13.8",
     "next": "15.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@builder.io/dev-tools": "^0.2.32",
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
     "@types/react": "^18",
