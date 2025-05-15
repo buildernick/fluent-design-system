@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   makeStyles,
   shorthands,
@@ -26,6 +28,8 @@ import {
   PersonFeedback24Filled,
   WeatherMoon24Regular,
   WeatherMoon24Filled,
+  ShieldKeyhole24Regular,
+  ShieldKeyhole24Filled,
 } from "@fluentui/react-icons";
 
 const HomeIcon = bundleIcon(Home24Filled, Home24Regular);
@@ -35,6 +39,7 @@ const AnalyticsIcon = bundleIcon(ChartMultiple24Filled, ChartMultiple24Regular);
 const SecurityIcon = bundleIcon(LockClosed24Filled, LockClosed24Regular);
 const FeedbackIcon = bundleIcon(PersonFeedback24Filled, PersonFeedback24Regular);
 const DarkModeIcon = bundleIcon(WeatherMoon24Filled, WeatherMoon24Regular);
+const AdminIcon = bundleIcon(ShieldKeyhole24Filled, ShieldKeyhole24Regular);
 
 const useStyles = makeStyles({
   navbar: {
@@ -79,6 +84,11 @@ const useStyles = makeStyles({
     color: tokens.colorBrandForeground1,
     marginBottom: "0",
   },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+    width: "100%",
+  },
 });
 
 interface NavigationProps {
@@ -88,47 +98,46 @@ interface NavigationProps {
 
 export const Navigation: React.FC<NavigationProps> = ({ isDarkMode, onThemeChange }) => {
   const styles = useStyles();
-  const [selectedTab, setSelectedTab] = React.useState("home");
+  const pathname = usePathname();
   const switchId = useId("theme-switch");
 
   const handleThemeChange = React.useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
     onThemeChange(ev.target.checked);
   }, [onThemeChange]);
 
-  const handleTabSelect = React.useCallback((event: SelectTabEvent, data: SelectTabData) => {
-    setSelectedTab(data.value as string);
-  }, []);
-
   const navItems = [
-    { icon: <HomeIcon />, label: "Home", value: "home" },
-    { icon: <AppsIcon />, label: "Products", value: "products" },
-    { icon: <CloudIcon />, label: "Solutions", value: "solutions" },
-    { icon: <AnalyticsIcon />, label: "Analytics", value: "analytics" },
-    { icon: <SecurityIcon />, label: "Security", value: "security" },
-    { icon: <FeedbackIcon />, label: "Support", value: "support" },
+    { icon: <HomeIcon />, label: "Home", value: "/", path: "/" },
+    { icon: <AppsIcon />, label: "Products", value: "/products", path: "/products" },
+    { icon: <CloudIcon />, label: "Solutions", value: "/solutions", path: "/solutions" },
+    { icon: <AnalyticsIcon />, label: "Analytics", value: "/analytics", path: "/analytics" },
+    { icon: <SecurityIcon />, label: "Security", value: "/security", path: "/security" },
+    { icon: <FeedbackIcon />, label: "Support", value: "/support", path: "/support" },
+    { icon: <AdminIcon />, label: "Administration", value: "/administration", path: "/administration" },
   ];
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.navHeader}>
-        <h1 className={styles.brandName}>CloudFlow</h1>
+        <Link href="/" className={styles.link}>
+          <h1 className={styles.brandName}>CloudFlow</h1>
+        </Link>
       </div>
       <div className={styles.navContainer}>
         <TabList 
           vertical 
-          selectedValue={selectedTab}
-          onTabSelect={handleTabSelect}
+          selectedValue={pathname}
           className={styles.tabList}
         >
           {navItems.map((item) => (
-            <Tab
-              key={item.value}
-              value={item.value}
-              icon={item.icon}
-              className={styles.tab}
-            >
-              {item.label}
-            </Tab>
+            <Link key={item.value} href={item.path} className={styles.link}>
+              <Tab
+                value={item.value}
+                icon={item.icon}
+                className={styles.tab}
+              >
+                {item.label}
+              </Tab>
+            </Link>
           ))}
           <Tab
             key="theme"
