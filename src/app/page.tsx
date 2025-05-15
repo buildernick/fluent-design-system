@@ -11,10 +11,6 @@ import {
   Title3,
   Body1,
   tokens,
-  Menu,
-  MenuTrigger,
-  MenuList,
-  MenuItem,
   FluentProvider,
   webLightTheme,
   webDarkTheme,
@@ -23,7 +19,16 @@ import {
   Avatar,
   Caption1,
   Text,
+  TabList,
+  Tab,
+  SelectTabEvent,
+  SelectTabData,
 } from "@fluentui/react-components";
+import {
+  Nav,
+  NavItem,
+  NavItemProps,
+} from "@fluentui/react-nav-preview";
 import {
   bundleIcon,
   CloudArrowUp24Regular,
@@ -75,7 +80,9 @@ const useStyles = makeStyles({
     width: "280px",
     backgroundColor: tokens.colorNeutralBackground2,
     borderRight: `1px solid ${tokens.colorNeutralStroke1}`,
-    height: "100%",
+    height: "100vh",
+    position: "sticky",
+    top: 0,
     display: "flex",
     flexDirection: "column",
   },
@@ -83,27 +90,27 @@ const useStyles = makeStyles({
     ...shorthands.padding("20px"),
     borderBottom: `1px solid ${tokens.colorNeutralStroke1}`,
   },
-  navList: {
+  navContainer: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+    overflowY: "auto",
+    paddingTop: "8px",
+  },
+  tabList: {
     display: "flex",
     flexDirection: "column",
     gap: "4px",
-    ...shorthands.padding("12px"),
+    ...shorthands.padding("8px"),
   },
-  navItem: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    ...shorthands.padding("12px"),
-    borderRadius: "4px",
-    cursor: "pointer",
-    color: tokens.colorNeutralForeground1,
-    textDecoration: "none",
-    ":hover": {
-      backgroundColor: tokens.colorNeutralBackground3,
+  tab: {
+    justifyContent: "flex-start",
+    height: "auto",
+    ...shorthands.padding("12px", "16px"),
+    "& span": {
+      fontSize: "14px",
+      fontWeight: "500",
     },
-  },
-  navIcon: {
-    fontSize: "20px",
   },
   main: {
     flex: 1,
@@ -265,19 +272,24 @@ const useStyles = makeStyles({
 export default function Home() {
   const styles = useStyles();
   const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const [selectedTab, setSelectedTab] = React.useState("home");
   const switchId = useId("theme-switch");
 
   const handleThemeChange = React.useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
     setIsDarkMode(ev.target.checked);
   }, []);
 
+  const handleTabSelect = React.useCallback((event: SelectTabEvent, data: SelectTabData) => {
+    setSelectedTab(data.value as string);
+  }, []);
+
   const navItems = [
-    { name: "Home", icon: <HomeIcon />, href: "/" },
-    { name: "Products", icon: <AppsIcon />, href: "/products" },
-    { name: "Solutions", icon: <CloudIcon />, href: "/solutions" },
-    { name: "Analytics", icon: <AnalyticsIcon />, href: "/analytics" },
-    { name: "Security", icon: <SecurityIcon />, href: "/security" },
-    { name: "Support", icon: <FeedbackIcon />, href: "/support" },
+    { icon: <HomeIcon />, label: "Home", value: "home" },
+    { icon: <AppsIcon />, label: "Products", value: "products" },
+    { icon: <CloudIcon />, label: "Solutions", value: "solutions" },
+    { icon: <AnalyticsIcon />, label: "Analytics", value: "analytics" },
+    { icon: <SecurityIcon />, label: "Security", value: "security" },
+    { icon: <PersonFeedback24Regular />, label: "Support", value: "support" },
   ];
 
   return (
@@ -287,22 +299,38 @@ export default function Home() {
           <div className={styles.navHeader}>
             <h1 className={styles.brandName}>CloudFlow</h1>
           </div>
-          <div className={styles.navList}>
-            {navItems.map((item) => (
-              <a key={item.name} href={item.href} className={styles.navItem}>
-                <span className={styles.navIcon}>{item.icon}</span>
-                {item.name}
-              </a>
-            ))}
-          </div>
-          <div className={styles.themeToggle}>
-            <DarkModeIcon className={styles.themeIcon} />
-            <Switch
-              id={switchId}
-              checked={isDarkMode}
-              onChange={handleThemeChange}
-              label="Dark Mode"
-            />
+          <div className={styles.navContainer}>
+            <TabList 
+              vertical 
+              selectedValue={selectedTab}
+              onTabSelect={handleTabSelect}
+              className={styles.tabList}
+            >
+              {navItems.map((item) => (
+                <Tab
+                  key={item.value}
+                  value={item.value}
+                  icon={item.icon}
+                  className={styles.tab}
+                >
+                  {item.label}
+                </Tab>
+              ))}
+              <Tab
+                key="theme"
+                value="theme"
+                icon={<DarkModeIcon />}
+                className={styles.tab}
+              >
+                Dark Mode
+                <Switch
+                  id={switchId}
+                  checked={isDarkMode}
+                  onChange={handleThemeChange}
+                  style={{ marginLeft: 'auto' }}
+                />
+              </Tab>
+            </TabList>
           </div>
         </nav>
 
