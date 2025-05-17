@@ -20,11 +20,11 @@ const useStyles = makeStyles({
   },
 });
 
-interface LayoutProps {
+interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
+export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const styles = useStyles();
   const [isDarkMode, setIsDarkMode] = React.useState(false);
 

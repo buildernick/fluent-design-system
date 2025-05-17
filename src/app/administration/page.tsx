@@ -36,7 +36,7 @@ import {
   PaymentRegular,
   PaymentFilled,
 } from "@fluentui/react-icons";
-import { Layout } from '@/components/Layout';
+import { AppLayout } from '@/components/Layout';
 
 const TeamIcon = bundleIcon(PeopleTeam24Filled, PeopleTeam24Regular);
 const DatabaseIcon = bundleIcon(DatabaseSearch24Filled, DatabaseSearch24Regular);
@@ -254,16 +254,16 @@ export default function Administration() {
 
   if (isLoading) {
     return (
-      <Layout>
+      <AppLayout>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
           <Spinner size="large" label="Loading administration panel..." />
         </div>
-      </Layout>
+      </AppLayout>
     );
   }
 
   return (
-    <Layout>
+    <AppLayout>
       <div className={styles.pageContainer}>
         <div className={styles.container}>
           <header className={styles.header}>
@@ -411,6 +411,6 @@ export default function Administration() {
           </div>
         </div>
       </div>
-    </Layout>
+    </AppLayout>
   );
 } 

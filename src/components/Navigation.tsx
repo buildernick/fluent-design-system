@@ -119,7 +119,7 @@ export const Navigation: React.FC<NavigationProps> = ({ isDarkMode, onThemeChang
     <nav className={styles.navbar}>
       <div className={styles.navHeader}>
         <Link href="/" className={styles.link}>
-          <h1 className={styles.brandName}>CloudFlow</h1>
+          <h1 className={styles.brandName}>3Ring</h1>
         </Link>
       </div>
       <div className={styles.navContainer}>
