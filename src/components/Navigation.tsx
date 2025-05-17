@@ -55,6 +55,14 @@ const useStyles = makeStyles({
   navHeader: {
     ...shorthands.padding("20px"),
     borderBottom: `1px solid ${tokens.colorNeutralStroke1}`,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  headerLeft: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
   },
   navContainer: {
     display: "flex",
@@ -87,7 +95,11 @@ const useStyles = makeStyles({
   link: {
     textDecoration: "none",
     color: "inherit",
-    width: "100%",
+  },
+  themeToggle: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
   },
 });
 
@@ -118,9 +130,19 @@ export const Navigation: React.FC<NavigationProps> = ({ isDarkMode, onThemeChang
   return (
     <nav className={styles.navbar}>
       <div className={styles.navHeader}>
-        <Link href="/" className={styles.link}>
-          <h1 className={styles.brandName}>3Ring</h1>
-        </Link>
+        <div className={styles.headerLeft}>
+          <Link href="/" className={styles.link}>
+            <h1 className={styles.brandName}>3Ring</h1>
+          </Link>
+        </div>
+        <div className={styles.themeToggle}>
+          <DarkModeIcon />
+          <Switch
+            id={switchId}
+            checked={isDarkMode}
+            onChange={handleThemeChange}
+          />
+        </div>
       </div>
       <div className={styles.navContainer}>
         <TabList 
@@ -139,20 +161,6 @@ export const Navigation: React.FC<NavigationProps> = ({ isDarkMode, onThemeChang
               </Tab>
             </Link>
           ))}
-          <Tab
-            key="theme"
-            value="theme"
-            icon={<DarkModeIcon />}
-            className={styles.tab}
-          >
-            Dark Mode
-            <Switch
-              id={switchId}
-              checked={isDarkMode}
-              onChange={handleThemeChange}
-              style={{ marginLeft: 'auto' }}
-            />
-          </Tab>
         </TabList>
       </div>
     </nav>
